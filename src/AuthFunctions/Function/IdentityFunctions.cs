@@ -27,6 +27,7 @@ namespace AuthFunctions.Function
             ILogger log)
         {
             log.LogDebug("{Function} - Start", nameof(SignUpFunction));
+            log.LogDebug(req);
             
             var result = await ProcessAsync(req, log, IdentityAction.SignUp);
 
@@ -42,6 +43,7 @@ namespace AuthFunctions.Function
             ILogger log)
         {
             log.LogDebug("{Function} - Start", nameof(SignInFunction));
+            log.LogDebug(req);
 
             var result = await ProcessAsync(req, log, IdentityAction.SignIn);
 
