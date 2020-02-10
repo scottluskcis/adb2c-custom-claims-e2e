@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using AuthFunctions.Extensions;
+using Core.Extensions;
 using Core.Models;
 using Core.Services.Identity;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace AuthFunctions.Function
 {
@@ -27,7 +29,6 @@ namespace AuthFunctions.Function
             ILogger log)
         {
             log.LogDebug("{Function} - Start", nameof(SignUpFunction));
-            log.LogDebug(req);
             
             var result = await ProcessAsync(req, log, IdentityAction.SignUp);
 
@@ -43,7 +44,6 @@ namespace AuthFunctions.Function
             ILogger log)
         {
             log.LogDebug("{Function} - Start", nameof(SignInFunction));
-            log.LogDebug(req);
 
             var result = await ProcessAsync(req, log, IdentityAction.SignIn);
 
@@ -59,9 +59,16 @@ namespace AuthFunctions.Function
             {
                 var inputClaimsModel = await req.ReadContentAsync<InputClaimsModel>();
 
+                if(req.Query.TryGetValue("campaignId", out var campIdValues))
+                    log.LogInformation("found campaignId in query string, value: {values}", campIdValues);
+
+                log.LogDebug("InputClaims: {Json}", inputClaimsModel.ToJson(Formatting.Indented));
+
                 var signUpResult = action == IdentityAction.SignUp
                     ? await _identityService.SignUpAsync(inputClaimsModel)
                     : await _identityService.SignInAsync(inputClaimsModel);
+
+                log.LogDebug("OutputClaims: {Json}", signUpResult.ToJson(Formatting.Indented));
 
                 result = new OkObjectResult(signUpResult);
             }

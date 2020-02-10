@@ -1,4 +1,5 @@
 ﻿using Core.Services.Identity;
+using Core.Services.Token;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,7 @@ namespace AuthFunctions
         {
             builder.Services.AddHttpClient();
 
+            builder.Services.AddTransient<ITokenService, TokenService>();
             builder.Services.AddTransient<IIdentityService, IdentityService>();
         }
     }
