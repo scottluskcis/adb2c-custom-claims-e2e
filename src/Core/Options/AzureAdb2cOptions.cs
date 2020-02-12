@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
-namespace Core.Options
+namespace CustomClaims.Core.Options
 {
     public class AzureAdb2COptions : IAzureAdb2COptions 
     {

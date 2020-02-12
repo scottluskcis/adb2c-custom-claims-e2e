@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Core.Models;
+using CustomClaims.Core.Models;
 
-namespace Core.Services.Token
+namespace CustomClaims.Core.Services.Token
 {
     public interface ITokenService
     {

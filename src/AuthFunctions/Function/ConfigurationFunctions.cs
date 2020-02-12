@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Core.Options;
+using CustomClaims.Core.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;

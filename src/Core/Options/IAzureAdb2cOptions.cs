@@ -1,4 +1,4 @@
-﻿namespace Core.Options
+﻿namespace CustomClaims.Core.Options
 {
     public interface IAzureAdb2COptions
     {

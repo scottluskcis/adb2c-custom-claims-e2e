@@ -1,4 +1,4 @@
-﻿namespace Core.Models
+﻿namespace CustomClaims.Core.Models
 {
     public class InputClaimsModel
     {

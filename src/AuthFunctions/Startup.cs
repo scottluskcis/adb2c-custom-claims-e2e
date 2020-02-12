@@ -1,7 +1,7 @@
 ﻿using AuthFunctions.Extensions;
-using Core.Options;
-using Core.Services.Identity;
-using Core.Services.Token;
+using CustomClaims.Core.Options;
+using CustomClaims.Core.Services.Identity;
+using CustomClaims.Core.Services.Token;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

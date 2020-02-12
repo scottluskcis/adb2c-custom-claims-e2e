@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Core.Services.Configuration
+namespace CustomClaims.Core.Services.Configuration
 {
     public class ConfigurationService : IConfigurationService
     {

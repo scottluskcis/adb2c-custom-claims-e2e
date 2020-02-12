@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using AuthFunctions.Extensions;
-using Core.Extensions;
-using Core.Models;
-using Core.Services.Identity;
+using CustomClaims.Core.Extensions;
+using CustomClaims.Core.Models;
+using CustomClaims.Core.Services.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;

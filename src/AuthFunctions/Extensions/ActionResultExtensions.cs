@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using Core.Models;
+using CustomClaims.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthFunctions.Extensions

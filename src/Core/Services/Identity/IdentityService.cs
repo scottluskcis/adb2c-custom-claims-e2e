@@ -1,10 +1,10 @@
 ﻿using System;
-using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using Core.Models;
+using CustomClaims.Core.Models;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Core.Services.Identity
+namespace CustomClaims.Core.Services.Identity
 {
     public class IdentityService : IIdentityService
     {

@@ -1,7 +1,7 @@
-﻿using Core.Models;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using CustomClaims.Core.Models;
 
-namespace Core.Services.Identity
+namespace CustomClaims.Core.Services.Identity
 {
     public interface IIdentityService
     {
