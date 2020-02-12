@@ -59,9 +59,6 @@ namespace AuthFunctions.Function
             {
                 var inputClaimsModel = await req.ReadContentAsync<InputClaimsModel>();
 
-                if(req.Query.TryGetValue("campaignId", out var campIdValues))
-                    log.LogInformation("found campaignId in query string, value: {values}", campIdValues);
-
                 log.LogDebug("InputClaims: {Json}", inputClaimsModel.ToJson(Formatting.Indented));
 
                 var signUpResult = action == IdentityAction.SignUp

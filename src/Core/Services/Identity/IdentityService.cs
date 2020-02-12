@@ -41,7 +41,7 @@ namespace Core.Services.Identity
             var outputClaims = new OutputClaimsModel
             {
                 LoyaltyNumber = new Random().Next(100, 1000).ToString(),
-                Action = action.ToString()
+                Action = $"{action.ToString()} at {DateTimeOffset.UtcNow.Ticks}"
             };
 
             _logger.LogInformation($"{nameof(IdentityService)}.{nameof(Process)} - End");
