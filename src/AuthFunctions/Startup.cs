@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
+﻿using AuthFunctions.Extensions;
 using Core.Options;
 using Core.Services.Identity;
 using Core.Services.Token;
@@ -16,48 +13,32 @@ namespace AuthFunctions
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            var config = builder.Services.GetConfiguration();
+            builder.Services.AddConfiguration();
 
             builder.Services.AddHttpClient();
 
             builder.Services.AddTransient<ITokenService, TokenService>();
             builder.Services.AddTransient<IIdentityService, IdentityService>();
 
-            builder.Services.AddOptions<AzureAdb2cOptions>().Configure(o =>
+            builder.Services.AddSingleton<IAzureAdb2COptions>((provider) =>
             {
-                o.ClientId = "c998a7a7-bd4d-45fd-9d3c-befa5e1d7cd4";
-                o.Tenant = "customaadb2c";
-                o.SignUpSignInPolicyId = "B2C_1A_signup_signin";
-                o.ResetPasswordPolicyId = "B2C_1A_PasswordReset";
-                o.EditProfilePolicyId = "B2C_1A_ProfileEdit";
-                o.RedirectUri = "https://jwt.ms";
-                o.ClientSecret = "s]5{AZfS8I8p1/{UK!]56h;(";
-                o.ApiUrl = "";
-                o.ApiScopes = "openid offline_access https://customaadb2c.onmicrosoft.com/api/read";
+                var config = provider.GetService<IConfiguration>();
+                var prefix = "Adb2c";
+                var options = new AzureAdb2COptions
+                {
+                    ClientId = config[$"{prefix}:ClientId"],
+                    Tenant = config[$"{prefix}:Tenant"],
+                    SignUpSignInPolicyId = config[$"{prefix}:SignUpSignInPolicyId"],
+                    ResetPasswordPolicyId = config[$"{prefix}:ResetPasswordPolicyId"],
+                    EditProfilePolicyId = config[$"{prefix}:EditProfilePolicyId"],
+                    RedirectUri = config[$"{prefix}:RedirectUri"],
+                    ClientSecret = config[$"{prefix}:ClientSecret"],
+                    ApiUrl = config[$"{prefix}:ApiUrl"],
+                    ApiScopes = config[$"{prefix}:ApiScopes"]
+                };
+                return options;
             });
-
-            var vaultUrl = config["VaultUrl"];
-            if (!string.IsNullOrEmpty(vaultUrl))
-            {
-                builder.Services.AddSingleton((provider) => new SecretClient(new Uri(vaultUrl), new DefaultAzureCredential()));
-            }
         }
-    }
 
-    public static class StartupExtensions
-    {
-        public static IConfiguration GetConfiguration(this IServiceCollection services)
-        {
-            var configurationBuilder = new ConfigurationBuilder();
-            
-            var descriptor = services.FirstOrDefault(d => d.ServiceType == typeof(IConfiguration));
-            if (descriptor?.ImplementationInstance is IConfigurationRoot configuration)
-            {
-                configurationBuilder.AddConfiguration(configuration);
-            }
-
-            var config = configurationBuilder.Build();
-            return config;
-        }
     }
 }

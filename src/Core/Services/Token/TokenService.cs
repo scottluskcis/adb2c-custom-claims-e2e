@@ -7,26 +7,31 @@ using Core.Extensions;
 using Core.Models;
 using Core.Options;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Core.Services.Token
 {
     public class TokenService : ITokenService
     {
         private readonly HttpClient _client;
-        private readonly AzureAdb2cOptions _options;
+        private readonly IAzureAdb2COptions _options;
         private readonly ILogger _logger;
 
-        public TokenService(HttpClient client, IOptions<AzureAdb2cOptions> options, ILogger<TokenService> logger)
+        public TokenService(HttpClient client, IAzureAdb2COptions options, ILogger<TokenService> logger)
         {
             _client = client;
-            _options = options?.Value;
+            _options = options;
             _logger = logger;
         }
 
         public async Task<TokenResponse> GetTokenAsync(string code, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("{Function} - Start", nameof(GetTokenAsync));
+
+            if (!(_options?.IsValid ?? false))
+            {
+                _logger.LogError($"invalid {nameof(IAzureAdb2COptions)} settings. {_options?.ErrorMessage}");
+                throw new InvalidOperationException($"invalid configuration, unable to perform operation. {_options?.ErrorMessage}");
+            }
 
             var url = $"{_options.B2CUrl}/token?p={_options.DefaultPolicy}";
 

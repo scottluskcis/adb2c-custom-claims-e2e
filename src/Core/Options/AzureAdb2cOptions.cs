@@ -1,6 +1,9 @@
-﻿namespace Core.Options
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Core.Options
 {
-    public class AzureAdb2cOptions
+    public class AzureAdb2COptions : IAzureAdb2COptions 
     {
         public const string PolicyAuthenticationProperty = "Policy";
 
@@ -19,5 +22,31 @@
         public string ClientSecret { get; set; }
         public string ApiUrl { get; set; }
         public string ApiScopes { get; set; }
+
+        public bool IsValid => string.IsNullOrEmpty(ErrorMessage);
+
+        public string ErrorMessage => string.Join(" ", Validate()).Trim();
+
+        public string[] Validate()
+        {
+            var errors = new List<string>();
+
+            if(string.IsNullOrEmpty(ClientId))
+                errors.Add($"{nameof(ClientId)} is required.");
+
+            if(string.IsNullOrEmpty(Tenant))
+                errors.Add($"{nameof(Tenant)} is required.");
+
+            if(string.IsNullOrEmpty(ClientSecret))
+                errors.Add($"{nameof(ClientSecret)} is required.");
+
+            if(string.IsNullOrEmpty(DefaultPolicy))
+                errors.Add($"{nameof(DefaultPolicy)} is required.");
+
+            if(string.IsNullOrEmpty(ApiScopes))
+                errors.Add($"{nameof(ApiScopes)} is required.");
+
+            return errors.ToArray();
+        }
     }
 }
