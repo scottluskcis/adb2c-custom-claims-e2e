@@ -1,0 +1,32 @@
+﻿@model AuthRedirectModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div>
+    <h4>B2C Auth URL</h4>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.B2CUrl)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.B2CUrl)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocalRedirectUrl)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocalRedirectUrl)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.State)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a class="btn btn-success" href="@Model.FullUrl">Go to SignIn</a>
+</div>

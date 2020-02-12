@@ -17,5 +17,6 @@
         string ApiScopes { get; }
         bool IsValid { get; }
         string ErrorMessage { get; }
+        string AuthorizeUrl { get; }
     }
 }
