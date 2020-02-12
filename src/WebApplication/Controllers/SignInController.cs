@@ -47,6 +47,8 @@ namespace WebApplication.Controllers
                 return RedirectToAction("Error", "Home");
 
             var response = await _client.GetAsync($"token?code={code[0]}");
+            response.EnsureSuccessStatusCode();
+
             var contentString = await response.Content.ReadAsStringAsync();
             _logger.LogInformation("response from endpoint: {response}", contentString);
 
@@ -57,6 +59,21 @@ namespace WebApplication.Controllers
         public IActionResult TokenDetail()
         {
             return View();
+        }
+
+        public async Task<IActionResult> RefreshToken(string refreshToken)
+        {
+            if(string.IsNullOrEmpty(refreshToken))
+                return RedirectToAction("Error", "Home");
+
+            var response = await _client.GetAsync($"token/refresh?refresh_token={refreshToken}");
+            response.EnsureSuccessStatusCode();
+
+            var contentString = await response.Content.ReadAsStringAsync();
+            _logger.LogInformation("response from endpoint: {response}", contentString);
+
+            var result = contentString.FromJson<TokenResponse>();
+            return View("TokenDetail", result);
         }
 
         private string GetLocalRedirectUrl()

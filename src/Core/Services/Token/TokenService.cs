@@ -62,9 +62,43 @@ namespace Core.Services.Token
             return result;
         }
 
-        public Task RefreshTokenAsync()
+        public  async Task<TokenResponse> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
         {
-            return null;
+            _logger.LogInformation("{Function} - Start", nameof(RefreshTokenAsync));
+
+            if (!(_options?.IsValid ?? false))
+            {
+                _logger.LogError($"invalid {nameof(IAzureAdb2COptions)} settings. {_options?.ErrorMessage}");
+                throw new InvalidOperationException($"invalid configuration, unable to perform operation. {_options?.ErrorMessage}");
+            }
+
+            var url = $"{_options.B2CUrl}/token?p={_options.DefaultPolicy}";
+
+            var now = DateTimeOffset.UtcNow.Ticks.ToString();
+
+            var formData = new FormUrlEncodedContent(
+                new Dictionary<string, string>
+                {
+                    {"client_id", _options.ClientId},
+                    {"client_secret", _options.ClientSecret},
+                    {"scope", _options.ApiScopes},
+                    {"redirect_uri", _options.RedirectUri},
+                    {"grant_type", "refresh_token"},
+                    {"refresh_token", refreshToken },
+                    {"state", now}
+                });
+
+            var response = await _client.PostAsync(url, formData, cancellationToken);
+            response.EnsureSuccessStatusCode();
+
+            var contentString = await response.Content.ReadAsStringAsync();
+            _logger.LogInformation("response from endpoint: {response}", contentString);
+
+            var result = contentString.FromJson<TokenResponse>();
+            
+            _logger.LogInformation("{Function} - End", nameof(RefreshTokenAsync));
+
+            return result;
         }
     }
 }

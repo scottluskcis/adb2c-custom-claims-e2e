@@ -9,5 +9,9 @@ namespace Core.Services.Token
         Task<TokenResponse> GetTokenAsync(
             string code, 
             CancellationToken cancellationToken = default);
+
+        Task<TokenResponse> RefreshTokenAsync(
+            string refreshToken, 
+            CancellationToken cancellationToken = default);
     }
 }

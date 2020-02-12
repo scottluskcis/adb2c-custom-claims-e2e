@@ -48,22 +48,30 @@ namespace AuthFunctions.Function
 
         [FunctionName(nameof(RefreshToken))]
         public async Task<IActionResult> RefreshToken(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "token/refresh")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "token/refresh")]
             HttpRequest req,
             ILogger log)
         {
             log.LogDebug("{Function} - Start", nameof(RefreshToken));
-            
-            req.Query.TryGetValue("code", out var code);
-            var result = new OkObjectResult(new
-            {
-                code = code,
-                action = "refreshToken"
-            });
+
+            var refreshToken = "";
+            if (req.Headers.ContainsKey("refresh_token"))
+                refreshToken = req.Headers["refresh_token"];
+            else if (req.Query.ContainsKey("refresh_token"))
+                refreshToken = req.Query["refresh_token"];
+            else if (req.Form?.ContainsKey("refresh_token") ?? false)
+                refreshToken = req.Form["refresh_token"];
+
+            if (string.IsNullOrEmpty(refreshToken))
+                return new BadRequestObjectResult("unable to find refresh_token");
+
+            var result = await _tokenService.RefreshTokenAsync(refreshToken);
 
             log.LogDebug("{Function} - End", nameof(RefreshToken));
 
-            return result;
+            return result != null
+                ? new OkObjectResult(result)
+                : new ObjectResult("error refreshing token") {StatusCode = (int) HttpStatusCode.InternalServerError};
         }
 
     }

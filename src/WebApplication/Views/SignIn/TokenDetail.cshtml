@@ -48,5 +48,5 @@
 </div>
 <div>
     <a class="btn btn-info" target="_blank" href="https://jwt.ms#id_token=@Model.IdToken">Decode Token (jwt.ms)</a>
-    <a class="btn btn-warning">Refresh Token</a>
+    <a class="btn btn-warning" href="@Url.Action("RefreshToken", "SignIn", new{ refreshToken = Model.RefreshToken })">Refresh Token</a>
 </div>
