@@ -17,7 +17,7 @@ namespace CustomClaims.Core.Options
         public string DefaultPolicy => SignUpSignInPolicyId;
         public string Authority => $"{AzureAdB2CInstance}/{Tenant}/{DefaultPolicy}/v2.0";
         public string B2CUrl => $"https://{Tenant}.b2clogin.com/{Tenant}.onmicrosoft.com/oauth2/v2.0";
-        public string AuthorizeUrl => $"{B2CUrl}/authorize?p={SignUpSignInPolicyId}&client_id={ClientId}&response_type=code&scope=openid%20offline_access&prompt=login";
+        public string AuthorizeUrl => $"{B2CUrl}/authorize?p={SignUpSignInPolicyId}&client_id={ClientId}&response_type=code&scope={ApiScopes}&prompt=login";
 
         public string ClientSecret { get; set; }
         public string ApiUrl { get; set; }
