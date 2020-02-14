@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Reflection;
 
-namespace CustomClaims.Core.Models
+namespace Security.Core.Models
 {
     public class B2CResponseContent
     {

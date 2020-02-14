@@ -1,4 +1,4 @@
-﻿namespace CustomClaims.Core.Options
+﻿namespace Security.Core.Options
 {
     public interface ITokenValidationOptions
     {

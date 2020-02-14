@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using CustomClaims.Core.Models;
+using Security.Core.Models;
 
-namespace CustomClaims.Core.Services.Identity
+namespace Security.Core.Services.Identity
 {
     public interface IIdentityService
     {

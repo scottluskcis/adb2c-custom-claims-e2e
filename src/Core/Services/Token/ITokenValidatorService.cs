@@ -1,6 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 
-namespace CustomClaims.Core.Services.Token
+namespace Security.Core.Services.Token
 {
     public interface ITokenValidatorService
     {

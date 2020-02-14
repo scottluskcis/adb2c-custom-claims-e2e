@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-using CustomClaims.Core.Services.Token;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Security.Core.Services.Token;
 
 namespace AuthFunctions.Function
 {

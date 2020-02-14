@@ -1,10 +1,10 @@
 ﻿using AuthFunctions.Extensions;
-using CustomClaims.Core.Options;
-using CustomClaims.Core.Services.Identity;
-using CustomClaims.Core.Services.Token;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Security.Core.Options;
+using Security.Core.Services.Identity;
+using Security.Core.Services.Token;
 
 [assembly: FunctionsStartup(typeof(AuthFunctions.Startup))]
 namespace AuthFunctions
@@ -35,6 +35,20 @@ namespace AuthFunctions
                     ClientSecret = config[$"{prefix}:ClientSecret"],
                     ApiUrl = config[$"{prefix}:ApiUrl"],
                     ApiScopes = config[$"{prefix}:ApiScopes"]
+                };
+                return options;
+            });
+
+            builder.Services.AddSingleton<ITokenValidationOptions>((provider) =>
+            {
+                var config = provider.GetService<IConfiguration>();
+                var prefix = "Adb2c";
+                var options = new TokenValidationOptions
+                {
+                    ClientId = config[$"{prefix}:ClientId"],
+                    Issuer = config[$"{prefix}:Issuer"],
+                    RsaModulus = config[$"{prefix}:RsaModulus"],
+                    RsaExponent = config[$"{prefix}:RsaExponent"]
                 };
                 return options;
             });

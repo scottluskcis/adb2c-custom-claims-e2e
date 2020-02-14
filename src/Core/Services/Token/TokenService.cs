@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CustomClaims.Core.Extensions;
-using CustomClaims.Core.Models;
-using CustomClaims.Core.Options;
 using Microsoft.Extensions.Logging;
+using Security.Core.Extensions;
+using Security.Core.Models;
+using Security.Core.Options;
 
-namespace CustomClaims.Core.Services.Token
+namespace Security.Core.Services.Token
 {
     public class TokenService : ITokenService
     {

@@ -1,11 +1,11 @@
-﻿using CustomClaims.Core.Options;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Security.Cryptography;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Security.Core.Options;
 
-namespace CustomClaims.Core.Services.Token
+namespace Security.Core.Services.Token
 {
     public sealed class TokenValidatorService : ITokenValidatorService
     {

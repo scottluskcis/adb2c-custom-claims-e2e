@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
-using CustomClaims.Core.Models;
 using Microsoft.AspNetCore.Mvc;
+using Security.Core.Models;
 
 namespace AuthFunctions.Extensions
 {

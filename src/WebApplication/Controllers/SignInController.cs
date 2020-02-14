@@ -1,9 +1,9 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using CustomClaims.Core.Extensions;
-using CustomClaims.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Security.Core.Extensions;
+using Security.Core.Models;
 using WebApplication.Models;
 
 namespace WebApplication.Controllers

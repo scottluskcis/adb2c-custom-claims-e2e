@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CustomClaims.Core.Options
+namespace Security.Core.Options
 {
     public class TokenValidationOptions : ITokenValidationOptions 
     {

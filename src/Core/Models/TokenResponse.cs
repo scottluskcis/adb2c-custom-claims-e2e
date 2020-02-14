@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace CustomClaims.Core.Models
+namespace Security.Core.Models
 {
     public class TokenResponse
     {

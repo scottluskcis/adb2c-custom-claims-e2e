@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace CustomClaims.Core.Extensions
+namespace Security.Core.Extensions
 {
     public static class ObjectExtensions
     {
