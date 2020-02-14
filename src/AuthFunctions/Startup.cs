@@ -19,6 +19,7 @@ namespace AuthFunctions
 
             builder.Services.AddTransient<ITokenService, TokenService>();
             builder.Services.AddTransient<IIdentityService, IdentityService>();
+            builder.Services.AddTransient<ITokenValidatorService, TokenValidatorService>();
 
             builder.Services.AddSingleton<IAzureAdb2COptions>((provider) =>
             {

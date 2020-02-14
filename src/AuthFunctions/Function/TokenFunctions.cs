@@ -1,39 +1,38 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
+using AuthFunctions.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Security.Core.Extensions;
+using Security.Core.Models;
 using Security.Core.Services.Token;
 
 namespace AuthFunctions.Function
 {
     public class TokenFunctions
     {
+        private readonly ITokenValidatorService _tokenValidatorService;
         private readonly ITokenService _tokenService;
 
-        public TokenFunctions(ITokenService tokenService)
+        public TokenFunctions(ITokenService tokenService, ITokenValidatorService tokenValidatorService)
         {
             _tokenService = tokenService;
+            _tokenValidatorService = tokenValidatorService;
         }
 
         [FunctionName(nameof(GetToken))]
         public async Task<IActionResult> GetToken(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "token")]
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "token")]
             HttpRequest req,
             ILogger log)
         {
             log.LogDebug("{Function} - Start", nameof(GetToken));
 
-            var code = "";
-            if (req.Headers.ContainsKey("code"))
-                code = req.Headers["code"];
-            else if (req.Query.ContainsKey("code"))
-                code = req.Query["code"];
-            else if (req.Form?.ContainsKey("code") ?? false)
-                code = req.Form["code"];
-
+            var code = req.GetValueForKey("code");
             if (string.IsNullOrEmpty(code))
                 return new BadRequestObjectResult("unable to find code");
 
@@ -48,20 +47,13 @@ namespace AuthFunctions.Function
 
         [FunctionName(nameof(RefreshToken))]
         public async Task<IActionResult> RefreshToken(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "token/refresh")]
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "token/refresh")]
             HttpRequest req,
             ILogger log)
         {
             log.LogDebug("{Function} - Start", nameof(RefreshToken));
 
-            var refreshToken = "";
-            if (req.Headers.ContainsKey("refresh_token"))
-                refreshToken = req.Headers["refresh_token"];
-            else if (req.Query.ContainsKey("refresh_token"))
-                refreshToken = req.Query["refresh_token"];
-            else if (req.Form?.ContainsKey("refresh_token") ?? false)
-                refreshToken = req.Form["refresh_token"];
-
+            var refreshToken = req.GetValueForKey("refresh_token");
             if (string.IsNullOrEmpty(refreshToken))
                 return new BadRequestObjectResult("unable to find refresh_token");
 
@@ -74,5 +66,26 @@ namespace AuthFunctions.Function
                 : new ObjectResult("error refreshing token") {StatusCode = (int) HttpStatusCode.InternalServerError};
         }
 
+        [FunctionName(nameof(GetTokenClaims))]
+        public IActionResult GetTokenClaims(
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "token/claims")]
+            HttpRequest req,
+            ILogger log)
+        {
+            log.LogDebug("{Function} - Start", nameof(GetTokenClaims));
+
+            var idToken = req.GetValueForKey("id_token");
+            if (string.IsNullOrEmpty(idToken))
+                return new BadRequestObjectResult("unable to find id_token");
+
+            var jwtToken = _tokenValidatorService.GetJwtSecurityToken(idToken);
+            var result = jwtToken.Claims.GetClaimsInfo();
+            
+            log.LogDebug("{Function} - End", nameof(GetTokenClaims));
+
+            return result != null
+                ? new OkObjectResult(result)
+                : new ObjectResult("error retrieving claims") {StatusCode = (int) HttpStatusCode.InternalServerError};
+        }
     }
 }

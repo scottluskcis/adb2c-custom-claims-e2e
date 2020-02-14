@@ -13,6 +13,6 @@ namespace WebApplication.Models
         [JsonProperty("redirect_uri")]
         public string LocalRedirectUrl { get; set; }
 
-        public string FullUrl => $"{B2CUrl}&redirect_uri={LocalRedirectUrl}&state={State}";
+        public string FullUrl => $"{B2CUrl}&redirect_uri={LocalRedirectUrl}&state={State}&campaignId=mvc_app";
     }
 }

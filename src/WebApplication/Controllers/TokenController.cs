@@ -1,5 +1,8 @@
-﻿using System.Net.Http;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Security.Core.Extensions;
@@ -55,6 +58,21 @@ namespace WebApplication.Controllers
 
             var result = contentString.FromJson<TokenResponse>();
             return View("TokenDetail", result);
+        }
+
+        public async Task<IActionResult> Claims(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+                return RedirectToAction("Error", "Home");
+
+            var response = await _client.GetAsync($"token/claims?id_token={token}");
+            response.EnsureSuccessStatusCode();
+
+            var contentString = await response.Content.ReadAsStringAsync();
+            _logger.LogInformation("response from endpoint: {response}", contentString);
+
+            var result = contentString.FromJson<IEnumerable<ClaimInfo>>();
+            return View(result);
         }
 
     }
