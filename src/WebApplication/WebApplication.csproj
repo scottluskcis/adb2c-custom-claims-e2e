@@ -10,13 +10,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
-      <Private>true</Private>
-    </ProjectReference>
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\PublishProfiles\" />
+    <ProjectReference Include="..\Core\Security.Core.csproj" />
   </ItemGroup>
 
 

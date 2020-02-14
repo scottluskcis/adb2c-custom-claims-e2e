@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Core\Security.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
